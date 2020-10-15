@@ -38,7 +38,7 @@ stages:
         tags: |
           $(tag)
       
-      publish: '$(Build.SourcesDirectory)/manifests'
+    - publish: '$(Build.SourcesDirectory)/manifests'
       artifact: manifests
 
 - stage: 'Deploy'
@@ -53,10 +53,10 @@ stages:
     variables:
     - group: Release
     steps:
-      download: current
+    - download: current
       artifact: manifests
       
-      task: KubernetesManifest@0
+    - task: KubernetesManifest@0
       displayName: Create imagePullSecret
       inputs:
         action: createSecret
@@ -65,7 +65,7 @@ stages:
         kubernetesServiceConnection: 'Kubernetes Cluster Connection'
         namespace: 'default'
       
-      task: KubernetesManifest@0
+    - task: KubernetesManifest@0
       displayName: Deploy to Kubernetes cluster
       inputs:
         action: deploy
